@@ -1,0 +1,5 @@
+tmp/
+vendor/
+app/resources/
+**/.DS_Store
+composer.lock

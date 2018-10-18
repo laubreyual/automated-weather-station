@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>{{ @SITE }}</title>
+  <!-- CSS  -->
+  <link rel="stylesheet" type="text/css" href="{{ @UI . 'css/bootstrap.min.css' }}" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ @UI . 'css/fontawesome-all.min.css' }}" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ @UI . 'css/style.css' }}" media="screen,projection"/>
+</head>
+<body>
+	<div class="container">
+	  <div class="main">
+	    <F3:include href="{{ @template }}"/>
+	  </div>
+	</div>
+	<!--  Scripts-->
+	<script src="{{ @UI . 'js/jquery.min.js' }}"></script>
+	<script src="{{ @UI . 'js/jquery-ui.min.js' }}"></script>
+	<script src="{{ @UI . 'js/bootstrap.min.js' }}"></script>
+	<script src="{{ @UI . 'js/script.js' }}"></script>
+	<script src="{{ @UI . 'js/init.js' }}"></script>
+</body>
+</html>
