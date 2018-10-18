@@ -4,11 +4,11 @@ class PageController extends Controller{
 
 	public function main(){
 
-		$this->renderView('main');
+		$this->render('main');
 
 	}
 
-	public function renderView($page){
+	public function render($page){
 
 		$this->f3->set('template', $this->f3->get('VIEWS').$page.'.htm');
 		
