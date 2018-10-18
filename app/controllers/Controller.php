@@ -29,6 +29,14 @@ class Controller {
 
 	}
 
+	public function render($page){
+
+		$this->f3->set('template', $this->f3->get('VIEWS').$page.'.htm');
+		
+		echo Template::instance()->render($this->f3->get('VIEWS').'layout.htm');
+
+	}
+
 	public function expect($param) {
 		$argnum = func_num_args();
 		$args = func_get_args();

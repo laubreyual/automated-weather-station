@@ -53,7 +53,7 @@ demo = {
           }]
         ];
 
-        Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
+        //Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
 
 
         var data = {
