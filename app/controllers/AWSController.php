@@ -38,8 +38,14 @@ class AWSController extends Controller{
 		// ]);
 		// var_dump($arr);
 
+
+
 		$this->render('main');
 
+	}
+
+	public function map(){
+		$this->render('awsmap');
 	}
 
 	
