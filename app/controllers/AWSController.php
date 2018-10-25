@@ -38,10 +38,7 @@ class AWSController extends Controller{
 		// ]);
 		// var_dump($arr);
 
-
-
-
-		//$this->render('main');
+		$this->render('main');
 
 	}
 

@@ -551,13 +551,16 @@
             //place = 'United_States/California/San_Francisco';
             //place = 'United_States/Minnesota/Minneapolis';
 
-            location.hash = 'https://www.yr.no/place/' + place + '/forecast_hour_by_hour.xml';
+            srcfile = 'https://www.yr.no/place/' + place + '/forecast_hour_by_hour.xml';
+
+            //location.hash = 'https://www.yr.no/place/' + place + '/forecast_hour_by_hour.xml';
         }
 
         // Then get the XML file through Highcharts' CORS proxy. Our proxy is limited to
         // this specific location. Useing the third party, rate limited cors.io service
         // for experimenting with other locations.
-        url = location.hash.substr(1);
+        //url = location.hash.substr(1);
+        url = srcfile;
         $.ajax({
             dataType: 'xml',
             url: 'sample.xml',
