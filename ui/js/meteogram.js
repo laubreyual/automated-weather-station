@@ -558,12 +558,14 @@
         // this specific location. Useing the third party, rate limited cors.io service
         // for experimenting with other locations.
         url = location.hash.substr(1);
-        $.ajax({
-            dataType: 'xml',
-            url: 'sample.xml',
-            success: function (xml) {
-                window.meteogram = new Meteogram(xml, 'container');
-                window.meteogram2 = new Meteogram(xml, 'container2');
-            },
-            error: Meteogram.prototype.error
-        });
+        if($("#meteogramcontainer").length > 0) {
+            $.ajax({
+                dataType: 'xml',
+                url: 'sample.xml',
+                success: function (xml) {
+                    window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+                    // window.meteogram2 = new Meteogram(xml, 'container2');
+                },
+                error: Meteogram.prototype.error
+            });
+        }

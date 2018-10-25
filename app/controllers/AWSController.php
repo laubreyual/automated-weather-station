@@ -41,7 +41,13 @@ class AWSController extends Controller{
 
 
 
-		//$this->render('main');
+		$this->render('main');
+
+	}
+
+	public function map(){
+		// die("test");
+		$this->render('awsmap');
 
 	}
 
