@@ -2,6 +2,5 @@ tmp/
 app/data/
 app/server.ini
 vendor/
-app/resources/
 **/.DS_Store
 composer.lock
