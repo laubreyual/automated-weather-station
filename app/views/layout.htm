@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>{{ @SITE }}</title>
-  <!-- CSS  -->
-  <link rel="stylesheet" type="text/css" href="{{ @UI . 'vendor.css' }}" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="{{ @UI . 'style.css' }}" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>{{ @SITE }}</title>
+    <!-- CSS  -->
+    <link rel="stylesheet" type="text/css" href="{{ @UI . 'vendor.css' }}">
+    <link rel="stylesheet" type="text/css" href="{{ @UI . 'style.css' }}">
 
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/windbarb.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="https://highcharts.github.io/pattern-fill/pattern-fill-v2.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="//code.highcharts.com/maps/modules/map.js"></script>
+    <script src="https://code.highcharts.com/modules/windbarb.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://highcharts.github.io/pattern-fill/pattern-fill-v2.js"></script>
 
 </head>
 <body>
     <div class="main">
-      <F3:include href="{{ @template }}"/>
+        <F3:include href="{{ @template }}"/>
     </div>
 
 	<script type="text/javascript" src="{{ @UI . 'vendor.js' }}"></script>
@@ -28,5 +29,7 @@
 
 	<script type="text/javascript" src="{{ @UI . 'js/meteogram.js' }}"></script>
 
+    <script src="https://code.highcharts.com/mapdata/countries/ph/ph-all.js"></script>
+    <script type="text/javascript" src="{{ @UI . 'js/philsmap.js' }}"></script>
 </body>
 </html>

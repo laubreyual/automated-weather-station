@@ -43,6 +43,10 @@ class AWSController extends Controller{
 
 	}
 
+	public function map(){
+		$this->render('awsmap');
+	}
+
 	
 	public function readFromDataFile(){
 

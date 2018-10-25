@@ -559,14 +559,16 @@
         // Then get the XML file through Highcharts' CORS proxy. Our proxy is limited to
         // this specific location. Useing the third party, rate limited cors.io service
         // for experimenting with other locations.
+
         //url = location.hash.substr(1);
         url = srcfile;
-        $.ajax({
-            dataType: 'xml',
-            url: 'sample.xml',
-            success: function (xml) {
-                window.meteogram = new Meteogram(xml, 'container');
-                window.meteogram2 = new Meteogram(xml, 'container2');
-            },
-            error: Meteogram.prototype.error
-        });
+        if($("#meteogramcontainer").length > 0) {
+          $.ajax({
+              dataType: 'xml',
+              url: 'sample.xml',
+              success: function (xml) {
+                  window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+              },
+              error: Meteogram.prototype.error
+          });
+        }
