@@ -41,7 +41,7 @@ class AWSController extends Controller{
 
 
 
-		//$this->render('main');
+		$this->render('main');
 
 	}
 
@@ -82,6 +82,9 @@ class AWSController extends Controller{
 	}
 	*/
 
+	public function addAWS(){
+		$this->render('addaws');
+	}
 
 
 }
