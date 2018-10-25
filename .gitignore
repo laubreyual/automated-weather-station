@@ -1,4 +1,5 @@
 tmp/
+app/data/
 vendor/
 app/resources/
 **/.DS_Store
