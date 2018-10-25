@@ -7,7 +7,7 @@ class Controller {
 		$this->f3 = Base::instance();
 		date_default_timezone_set($this->f3->get('TIMEZONE'));
 
-		/*$this->f3->set('DB',new DB\SQL(
+		$this->f3->set('DB',new DB\SQL(
 			'mysql:host='.$this->f3->get('DB_HOST').';port=3306;dbname='.$this->f3->get('DB_NAME'),
 			$this->f3->get('DB_USER'),
 			$this->f3->get('DB_PASS'),
@@ -17,7 +17,7 @@ class Controller {
 		$this->db = $this->f3->get('DB');
 		new \DB\SQL\Session($this->db,'sessiondata',TRUE,function($session){
 			return false; // destroy session
-		});*/
+		});
 
 	}
 
