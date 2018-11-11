@@ -17,7 +17,103 @@
 </head>
 <body>
     <div class="main">
-        <F3:include href="{{ @template }}"/>
+
+        <div id="loader">
+          <div class="spinner"></div>
+        </div>
+
+        <script>
+          window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const appContent = document.getElementById('app-content');
+            // setTimeout(() => {
+              loader.classList.add('fadeOut');
+              appContent.classList.remove('hidden');
+            // }, 3000);
+          });
+        </script>
+
+        <div id="app-content" class="hidden">
+          <!-- #Left Sidebar ==================== -->
+          <div class="sidebar">
+            <div class="sidebar-inner">
+              <!-- ### $Sidebar Header ### -->
+              <div class="sidebar-logo">
+                <div class="peers ai-c fxw-nw">
+                  <div class="peer peer-greed">
+                    <a class="sidebar-link td-n pX-45 pY-30" href="{{ @BASE }}">
+                      <!-- <div class="logo"> -->
+                        
+                      <!-- </div> -->
+                    </a>
+                  </div>
+                  <div class="peer">
+                    <div class="mobile-toggle sidebar-toggle">
+                      <a href="" class="td-n">
+                        <i class="ti-arrow-circle-left"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ### $Sidebar Menu ### -->
+              <ul class="sidebar-menu scrollable pos-r">
+                <li class="nav-item mT-30 active">
+                  <a class="sidebar-link" href="{{@BASE}}">
+                    <span class="icon-holder">
+                      <i class="c-purple-500 fa fa-lg fa-home"></i>
+                    </span>
+                    <span class="title">Weather</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="sidebar-link" href="{{@BASE}}/map">
+                    <span class="icon-holder">
+                      <i class="c-purple-500 fa fa-lg fa-user-md"></i>
+                    </span>
+                    <span class="title">Map</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- #Main ============================ -->
+          <div class="page-container">
+
+            <div class="header navbar">
+              <div class="header-container">
+                <ul class="nav-left">
+                </ul>
+                <ul class="nav-right">
+                  <li class="search-box">
+                    <a class="search-toggle no-pdd-right" href="javascript:void(0);">
+                      <i class="search-icon fa fa-search pdd-right-10"></i>
+                      <i class="search-icon-close fa fa-times pdd-right-10"></i>
+                    </a>
+                  </li>
+                  <li class="search-input">
+                    <input class="form-control" type="text" placeholder="Search...">
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- ### $App Screen Content ### -->
+            <main class="main-content bgc-grey-100" id="dashboard-content">
+                <F3:include href="{{ @template }}"/>
+            </main>
+
+            <!-- ### $App Screen Footer ### -->
+            <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
+              <span>Copyright © 2017 Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a>. All rights reserved.</span>
+            </footer>
+          </div>
+        </div>
+
+        <script type="text/javascript" src="ui/vendor.js"></script><script type="text/javascript" src="ui/bundle.js"></script>
+        
     </div>
 
 	<script type="text/javascript" src="{{ @UI . 'vendor.js' }}"></script>

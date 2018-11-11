@@ -51,7 +51,7 @@ class AWSController extends Controller{
 	
 	public function readFromDataFile(){
 
-		die('Please do not use this.');
+		//die('Please do not use this.');
 
 		set_time_limit(0);
 
