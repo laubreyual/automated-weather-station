@@ -1,0 +1,34 @@
+<div class="container">
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-md-auto">
+			<h4>Add new AWS</h4>
+		</div>
+		<div class="col"></div>
+	</div>
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-6">
+			<div class="card">
+				<div class="card-body">
+					<form action="{{ @BASE.'/addAWS/new' }}" method="post">
+					  <div class="form-group">
+					    <label for="name">Name</label>
+					    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+					  </div>
+					  <div class="form-group">
+					    <label for="username">Username</label>
+					    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+					  </div>
+					  <div class="form-group">
+					    <label for="password">Password</label>
+					    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+					  </div>
+					  <div class="text-center"><button type="submit" class="btn btn-primary">Add</button></div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col"></div>
+	</div>
+</div>
