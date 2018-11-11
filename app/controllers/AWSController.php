@@ -150,7 +150,8 @@ class AWSController extends Controller{
 
 	function generateXMLdata(){
 
-		$symbols = ['Clear sky','Fair','Partly cloudy','Cloudy','Rain','Heavy rain'];
+		$symbols = file_get_contents('app/resources/weather-symbols.txt');
+		$symbols = explode("\n", $symbols);
 
 		$weatherdata = new SimpleXMLElement('<weatherdata/>');
 
@@ -169,18 +170,23 @@ class AWSController extends Controller{
 
 		$forecast = $weatherdata->addChild('forecast');
 		$tabular = $forecast->addChild('tabular');
-		for ($i=0; $i<20; $i++) {
+		for ($i=0; $i<30; $i++) {
 			$time = $tabular->addChild('time');
 
 			$time->addAttribute('from', date("Y-m-d\TH:i:s", strtotime("+".$i." hours")));
 			$time->addAttribute('to', date("Y-m-d\TH:i:s", strtotime("+".($i+1)." hours")));
 
-			$x = rand(0,5);
+			$x = rand(0,sizeof($symbols)-1);
+			$parts = explode(',', $symbols[$x]);
+			$name = $parts[0];
+			$var = $parts[1];
+
+			$x = rand(0,sizeof($symbols)-1);
 			$symbol = $time->addChild('symbol');
 			$symbol->addAttribute('number', $x);
 			$symbol->addAttribute('numberEx', $x);
-			$symbol->addAttribute('name', $symbols[$x]);
-			$symbol->addAttribute('var', str_pad($x, 2, '0', STR_PAD_LEFT));
+			$symbol->addAttribute('name', $name);
+			$symbol->addAttribute('var', $var);
 
 			
 			$precipitation = $time->addChild('precipitation');

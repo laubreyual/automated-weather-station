@@ -1,0 +1,41 @@
+Clear sky,01
+Fair,02
+Partly cloudy,03
+Cloudy,04
+Light rain showers,40
+Rain showers,05
+Heavy rain showers,41
+Light rain showers and thunder,24
+Rain showers and thunder,06
+Heavy rain showers and thunder,25
+Light sleet showers,42
+Sleet showers,07
+Heavy sleet showers,43
+Lights sleet showers and thunder,26
+Sleet showers and thunder,20
+Heavy sleet showers and thunder,27
+Light snow showers,44
+Snow showers,08
+Heavy snow showers,45
+Lights snow showers and thunder,28
+Snow showers and thunder,21
+Heavy snow showers and thunder,29
+Light rain,46
+Rain,09
+Heavy rain,10
+Light rain and thunder,30
+Rain and thunder,22
+Heavy rain and thunder,11
+Light sleet,47
+Sleet,12
+Heavy sleet,48
+Light sleet and thunder,31
+Sleet and thunder,23
+Heavy sleet and thunder,32
+Light snow,49
+Snow,13
+Heavy snow,50
+Light snow and thunder,33
+Snow and thunder,14
+Heavy snow and thunder,34
+Fog,15
