@@ -146,6 +146,11 @@ if( $("#mapcontainer").length > 0 ) {
             }
         },
 
+        tooltip: {
+            headerFormat: '',
+            pointFormat: '<b>{point.name}</b><br>Lat: {point.lat}, Lon: {point.lon}'
+        },
+
         colorAxis: {
             min: 0
         },
@@ -162,6 +167,16 @@ if( $("#mapcontainer").length > 0 ) {
                 enabled: true,
                 format: '{point.name}'
             }
+        }, {
+            // Specify points using lat/lon
+            type: 'mappoint',
+            name: 'Cities',
+            color: Highcharts.getOptions().colors[1],
+            data: [{
+                name: 'Los Banos',
+                lat: 14.1699,
+                lon: 121.2441
+            }]
         }]
     });
 }
