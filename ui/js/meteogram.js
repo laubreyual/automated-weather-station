@@ -565,7 +565,7 @@
         if($("#meteogramcontainer").length > 0) {
           $.ajax({
               dataType: 'xml',
-              url: 'sample.xml',
+              url: BASE+'/xml',
               success: function (xml) {
                   window.meteogram = new Meteogram(xml, 'meteogramcontainer');
               },

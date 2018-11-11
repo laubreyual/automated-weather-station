@@ -147,6 +147,74 @@ class AWSController extends Controller{
 		var_dump($files);
 
 	}
+
+	function generateXMLdata(){
+
+		$symbols = ['Clear sky','Fair','Partly cloudy','Cloudy','Rain','Heavy rain'];
+
+		$weatherdata = new SimpleXMLElement('<weatherdata/>');
+
+		$location = $weatherdata->addChild('location');
+		$location->addChild('name', 'LB');
+		$location->addChild('type', 'Town');
+		$location->addChild('country', 'Philippines');
+
+		$credit = $weatherdata->addChild('credit');
+		$link = $credit->addChild('link');
+		$link->addAttribute('text', 'Weather forecast from Yr, delivered by the Norwegian Meteorological Institute and the NRK" url="http://www.yr.no/place/United_Kingdom/England/London/');
+		
+		$timezone = $location->addChild('timezone');
+		$timezone->addAttribute('id', 'Europe/London');
+		$timezone->addAttribute('utcoffsetMinutes', '60');
+
+		$forecast = $weatherdata->addChild('forecast');
+		$tabular = $forecast->addChild('tabular');
+		for ($i=0; $i<20; $i++) {
+			$time = $tabular->addChild('time');
+
+			$time->addAttribute('from', date("Y-m-d\TH:i:s", strtotime("+".$i." hours")));
+			$time->addAttribute('to', date("Y-m-d\TH:i:s", strtotime("+".($i+1)." hours")));
+
+			$x = rand(0,5);
+			$symbol = $time->addChild('symbol');
+			$symbol->addAttribute('number', $x);
+			$symbol->addAttribute('numberEx', $x);
+			$symbol->addAttribute('name', $symbols[$x]);
+			$symbol->addAttribute('var', str_pad($x, 2, '0', STR_PAD_LEFT));
+
+			
+			$precipitation = $time->addChild('precipitation');
+			$precipitation->addAttribute('value', rand(0,3).'.'.rand(0,99));
+
+			$windDirection = $time->addChild('windDirection');
+			$windDirection->addAttribute('deg', rand(0,360).'.'.rand(0,9));
+			$windDirection->addAttribute('code', 'SSE');
+			$windDirection->addAttribute('name', 'South-southeast');
+
+			
+			$windSpeed = $time->addChild('windSpeed');
+			$windSpeed->addAttribute('mps', rand(0,10).'.'.rand(0,9));
+			$windSpeed->addAttribute('name', 'Gentle breeze');
+
+
+			$temperature = $time->addChild('temperature');
+			$temperature->addAttribute('unit', 'celsius');
+			$temperature->addAttribute('value', rand(12,35));
+
+
+			$pressure = $time->addChild('pressure');
+			$pressure->addAttribute('unit', 'hPa');
+			$pressure->addAttribute('value', rand(900,1200).'.'.rand(0,9));
+
+		}
+
+
+		echo $weatherdata->asXML();
+
+		
+
+
+	}
 	
 
 	public function addAWS(){
