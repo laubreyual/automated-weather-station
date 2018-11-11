@@ -39,7 +39,6 @@ class AWSController extends Controller{
 		// var_dump($arr);
 
 
-
 		$this->render('main');
 
 	}
@@ -150,6 +149,18 @@ class AWSController extends Controller{
 	}
 	
 
+	public function addAWS(){
+		$this->render('addaws');
+	}
 
+	public function addNewAWS($f3){
+		$am = new AWSMapper($this->db);
+		$am->name = $f3->get('POST.name');
+		$am->username = $f3->get('POST.username');
+		$am->password = $f3->get('POST.password');
+		$am->save();
+
+		$this->f3->reroute('/addAWS');
+	}
 
 }
