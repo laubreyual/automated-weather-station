@@ -568,6 +568,7 @@
               url: BASE+'/xml',
               success: function (xml) {
                   window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+                  window.meteogram = new Meteogram(xml, 'meteogramcontainer2');
               },
               error: Meteogram.prototype.error
           });

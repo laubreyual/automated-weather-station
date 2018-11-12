@@ -237,4 +237,21 @@ class AWSController extends Controller{
 		$this->f3->reroute('/addAWS');
 	}
 
+	public function compare(){
+
+		$results = $this->db->exec('SELECT aws_id, name from aws;');
+		$aws = [];
+		foreach ($results as $result) {
+			$aws[] = array(
+				'id'=>$result['aws_id'],
+				'name'=>$result['name']
+			);
+		}
+
+		$this->f3->set('aws', $aws);
+		$this->f3->set('aws2', $aws);
+		$this->render('compare');
+	
+	}
+
 }
