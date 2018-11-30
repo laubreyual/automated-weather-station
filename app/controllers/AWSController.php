@@ -227,6 +227,12 @@ class AWSController extends Controller{
 		$this->render('addaws');
 	}
 
+	public function manageAWS(){
+		$aws = $this->db->exec('SELECT * FROM aws'); 
+
+		$this->render('manageaws');
+	}
+
 	public function addNewAWS($f3){
 		$am = new AWSMapper($this->db);
 		$am->name = $f3->get('POST.name');
@@ -234,7 +240,17 @@ class AWSController extends Controller{
 		$am->password = $f3->get('POST.password');
 		$am->save();
 
-		$this->f3->reroute('/addAWS');
+		$this->f3->reroute('/manageAWS');
+	}
+
+	public function editAWS($f3){
+		$am = new AWSMapper($this->db);
+		$am->name = $f3->get('POST.name');
+		$am->username = $f3->get('POST.username');
+		$am->password = $f3->get('POST.password');
+		$am->save();
+
+		$this->f3->reroute('/manageAWS');
 	}
 
 }
