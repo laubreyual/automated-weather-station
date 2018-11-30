@@ -168,7 +168,9 @@ if( $("#mapcontainer").length > 0 ) {
                 format: '{point.name}'
             }
         }, {
+            
             // Specify points using lat/lon
+
             type: 'mappoint',
             name: 'Cities',
             color: Highcharts.getOptions().colors[1],

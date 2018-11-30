@@ -10,7 +10,9 @@
     <!-- CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ @UI . 'vendor.css' }}">
     <link rel="stylesheet" type="text/css" href="{{ @UI . 'style.css' }}">
-
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="//code.highcharts.com/maps/modules/map.js"></script>
@@ -83,11 +85,11 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="sidebar-link" href="{{@BASE}}/addAWS">
+                  <a class="sidebar-link" href="{{@BASE}}/manageAWS">
                     <span class="icon-holder">
-                      <i class="c-purple-500 fas fa-lg fa-plus-square"></i>
+                      <i class="c-purple-500 fas fa-lg fa-cogs"></i>
                     </span>
-                    <span class="title">Add New AWS</span>
+                    <span class="title">AWS Manager</span>
                   </a>
                 </li>
                 <li class="nav-item">
