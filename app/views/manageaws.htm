@@ -39,75 +39,65 @@
 					</div>
 		    </div>
 		    <div id="editdelete" class="tab-pane fade">
-		    	<table class="table">
-		    		<thead>
-		    			<tr>
-		    				<th scope="col">#</th>
-		    				<th scope="col">Name</th>
-		    				<th scope="col">Username</th>
-		    				<th scope="col">Password</th>
-		    				<th scope="col" colspan="2" class="text-center">Action</th>
-		    			</tr>
-		    		</thead>
-		    		<tbody>
-		    			<tr>
-		    				<th scope="row">1</th>
-		    				<td>alhajkfh</td>
-		    				<td>sffa</td>
-		    				<td>qee124</td>
-		    				<td class="text-center"><a href="#!" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#myModalNorm"><i class="fas fa-pen"></i></a></td>
-		    				<td class="text-center"><a href="#!" class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></a></td>
-		    			</tr>
-		    		</tbody>
-		    	</table>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Name</th>
+								<th scope="col">Username</th>
+								<th scope="col">Password</th>
+								<th scope="col" colspan="2" class="text-center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">1</th>
+								<td>alhajkfh</td>
+								<td>sffa</td>
+								<td>qee124</td>
+								<td class="text-center"><a href="#!" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#myModalNorm"><i class="fas fa-pen"></i></a></td>
+								<td class="text-center"><a href="#!" class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></a></td>
+							</tr>
+						</tbody>
+					</table>
 
 					<!-- Modal -->
 					<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					    <div class="modal-dialog modal-dialog-centered">
-					        <div class="modal-content">
-					            <!-- Modal Header -->
-					            <div class="modal-header">
-					            	<h4 class="modal-title" id="myModalLabel">Edit AWS</h4>
-				                <button type="button" class="close" data-dismiss="modal">
-				                       <span aria-hidden="true">&times;</span>
-				                       <span class="sr-only">Close</span>
-				                </button>
-					            </div>
-					            
-					            <!-- Modal Body -->
-					            <div class="modal-body">
-					           		<form action="{{ @BASE.'/editAWS' }}" method="post">
-												  <div class="form-group">
-												    <label for="editname">Name</label>
-												    <input type="text" class="form-control" id="editname" name="name" placeholder="Enter name">
-												  </div>
-												  <div class="form-group">
-												    <label for="editusername">Username</label>
-												    <input type="text" class="form-control" id="editusername" name="username" placeholder="Enter username">
-												  </div>
-												  <div class="form-group">
-												    <label for="editpassword">Password</label>
-												    <input type="password" class="form-control" id="editpassword" name="password" placeholder="Enter password">
-												  </div>
-												  <div class="text-center"><button type="submit" class="btn btn-warning">Update <i class="fas fa-check"></i></button></div>
-												</form>  
-					            </div>
-					        </div>
-					    </div>
+				    <div class="modal-dialog modal-dialog-centered">
+			        <div class="modal-content">
+		            <!-- Modal Header -->
+		            <div class="modal-header">
+		            	<h4 class="modal-title" id="myModalLabel">Edit AWS</h4>
+	                <button type="button" class="close" data-dismiss="modal">
+                  	<span aria-hidden="true">&times;</span>
+                  	<span class="sr-only">Close</span>
+	                </button>
+		            </div>
+		            
+		            <!-- Modal Body -->
+		            <div class="modal-body">
+		           		<form action="{{ @BASE.'/editAWS' }}" method="post">
+									  <div class="form-group">
+									    <label for="editname">Name</label>
+									    <input type="text" class="form-control" id="editname" name="name" placeholder="Enter name">
+									  </div>
+									  <div class="form-group">
+									    <label for="editusername">Username</label>
+									    <input type="text" class="form-control" id="editusername" name="username" placeholder="Enter username">
+									  </div>
+									  <div class="form-group">
+									    <label for="editpassword">Password</label>
+									    <input type="password" class="form-control" id="editpassword" name="password" placeholder="Enter password">
+									  </div>
+									  <div class="text-center"><button type="submit" class="btn btn-warning">Update <i class="fas fa-check"></i></button></div>
+									</form>  
+		            </div>
+			        </div>
+				    </div>
 					</div>
-
-
-
-
 		    </div>
 		  </div>
 		</div>
 		<div class="col"></div>
 	</div>
 </div>
-
-<script>
-	$(document).ready(function(){
-	    $('[data-toggle="popover"]').popover(); 
-	});
-</script>
