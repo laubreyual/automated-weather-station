@@ -2,42 +2,11 @@
 // Data is joined to map using value of 'hc-key' property by default.
 // See API docs for 'joinBy' for more info on linking data and map.
 
-if( $("#mapcontainer").length > 0 ) {
-    // get data
-    var data = []; 
-    var markerData = []; 
-
-    $.ajax({
-      dataType: 'json',
-      url: BASE+'/mapJSON',
-      success: function (readings) {
-        console.log(readings);
-        readings.forEach(function(reading){
-            console.log(reading);
-            data.push({
-                lat: reading.latitude,
-                lon: reading.longitude,
-                observation_time: reading.observation_time,
-                station_name: reading.station_name,
-                rain: reading.rain,
-                temperature: reading.temperature,
-                wind_direction: reading.wind_direction,
-                wind_speed: reading.wind_speed,
-                solar_radiation: reading.solar_radiation
-            });
-            markerData.push({
-                name: reading.station_name,
-                lat: reading.latitude,
-                lon: reading.longitude
-            })
-            console.log(markerData)
-        }) 
-      },
-      error: Meteogram.prototype.error
-    });
-
-
+function Map(data) {
     // Create the chart
+    var mapData = Highcharts.maps['countries/ph/ph-all'];
+    console.log(data);  
+
     Highcharts.mapChart('mapcontainer', {
         chart: {
             map: 'countries/ph/ph-all'
@@ -57,44 +26,70 @@ if( $("#mapcontainer").length > 0 ) {
                 verticalAlign: 'bottom'
             }
         },
-
         tooltip: {
             headerFormat: '',
             pointFormat: '<b>{point.station_name}</b><br> \
-                            <b>Precipitation<b>: {point.rain} <br>'
+                            <b>Temperature</b>: {point.temperature} <br> \
+                            <b>Precipitation</b>: {point.precipitation} <br> \
+                            <b>Wind Speed</b>: {point.wind_speed} <br> \
+                            <b>Wind Direction</b>: {point.wind_direction} <br> \
+                            <b>Solar Radiation</b>: {point.solar_radiation} <br>'
         },
 
-        colorAxis: {
-            min: 0
-        },
-
-        series: [{
+        series: [
+        {
+            name: 'Provinces',
+            mapData: mapData,
+            enableMouseTracking: false
+        },{
+            type: 'mapbubble',
+            mapData: mapData,
+            name: 'Weather Stations',
             data: data,
-            name: 'Temperature',
-            states: {
-                hover: {
-                    color: '#BADA55'
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }, {
-            
-            // Specify points using lat/lon
-
-            type: 'mappoint',
-            name: 'Cities',
-            color: Highcharts.getOptions().colors[8],
-            data: markerData
-            // data: [{
-            //     name: 'Los Banos',
-            //     lat: 14.1699,
-            //     lon: 121.2441
-            // }]
+                joinBy: ['postal-code', 'code'],
+            minSize: 4,
+            maxSize: '12%',
+            color: Highcharts.getOptions().colors[8]
         }]
     });
+}
+
+if( $("#mapcontainer").length > 0 ) {
+    // get data
+    var data = []; 
+    var markerData = []; 
+    var min = 999, max = 0;
+
+    $.ajax({
+      dataType: 'json',
+      url: BASE+'/mapJSON',
+      success: function (readings) {
+        readings.forEach(function(reading){
+            data.push({
+                z: reading.rain,
+                lat: reading.latitude,
+                lon: reading.longitude,
+                observation_time: reading.observation_time,
+                station_name: reading.station_name,
+                temperature: reading.temperature,
+                precipitation: reading.rain,
+                wind_direction: reading.wind_direction,
+                wind_speed: reading.wind_speed,
+                solar_radiation: reading.solar_radiation
+            });
+
+            if(reading.rain > max) max = reading.rain;
+            if(reading.rain < min) min = reading.rain;
+        }) 
+        data.forEach(function(reading) {
+            reading.z = (reading.z - min) / ((max-min)*1.0);
+            // console.log(reading.z);
+        })
+        highcharts = new Map(data, min, max);
+      }
+    });
+
+
     // Highcharts.getOptions().colors
     // 0: "#7cb5ec" - blue
     // 1: "#434348" - black
