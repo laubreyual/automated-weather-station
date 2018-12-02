@@ -45,7 +45,6 @@ function Map(data, zmetric) {
         tooltip: {
             headerFormat: '',
             pointFormat: '<b>{point.station_name}</b><br> \
-                            <b>z</b>: {point.z} <br> \
                             <b>Temperature</b>: {point.temperature} <br> \
                             <b>Precipitation</b>: {point.precipitation} <br> \
                             <b>Wind Speed</b>: {point.wind_speed} <br> \
