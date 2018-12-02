@@ -450,12 +450,35 @@ class AWSController extends Controller{
 		}
 		$this->f3->set('aws_id', $aws_id);
 
+		$result = $this->db->exec('SELECT station_name, rain, solar_radiation, wind_speed, wind_direction, temperature FROM reading WHERE aws_id = :id ORDER BY observation_time DESC LIMIT 1;', array(
+			':id'=>$aws_id
+		))[0];
+		
+		$this->f3->set('awsname1', $result['station_name']);
+		$this->f3->set('precipitation1', $result['rain']);
+		$this->f3->set('radiation1', $result['solar_radiation']);
+		$this->f3->set('windspeed1', $result['wind_speed']);
+		$this->f3->set('winddirection1', $result['wind_direction']);
+		$this->f3->set('temperature1', $result['temperature']);
+
+
 		if ($this->f3->exists('GET.id2')) {
 			$aws_id2 = $this->f3->get('GET.id2');
 		} else {
 			$aws_id2 = $results[0]['aws_id'];
 		}
 		$this->f3->set('aws_id2', $aws_id2);
+
+		$result = $this->db->exec('SELECT station_name, rain, solar_radiation, wind_speed, wind_direction, temperature FROM reading WHERE aws_id = :id ORDER BY observation_time DESC LIMIT 1;', array(
+			':id'=>$aws_id2
+		))[0];
+		
+		$this->f3->set('awsname2', $result['station_name']);
+		$this->f3->set('precipitation2', $result['rain']);
+		$this->f3->set('radiation2', $result['solar_radiation']);
+		$this->f3->set('windspeed2', $result['wind_speed']);
+		$this->f3->set('winddirection2', $result['wind_direction']);
+		$this->f3->set('temperature2', $result['temperature']);
 		
 
 		$this->f3->set('awses', $results);
