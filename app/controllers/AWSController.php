@@ -257,7 +257,7 @@ class AWSController extends Controller{
 
 	public function login() {
 		$username = $this->f3->get('POST.username');
-		$password = $this->f3->get('POST.password');
+		$password = md5($this->f3->get('POST.password'));
 
 		$um = new UserMapper($this->db);
 		$um->load(array('username = :username AND password = :password', array(':username'=>$username,':password'=>$password)));
