@@ -67,4 +67,50 @@ class Controller {
 		die($json);
 	}
 
+	public function createInsertQuery($arr, $tname, $tcols){
+
+		$mysqli = new mysqli($this->f3->get('DB_HOST'), $this->f3->get('DB_USER'), $this->f3->get('DB_PASS'), $this->f3->get('DB_NAME'));
+
+		$init_q = "INSERT INTO `" . mysqli_real_escape_string($mysqli, $tname) . "` (";
+
+		for($i = 0; $i < sizeof($tcols); $i++){
+			$init_q .= "`" . mysqli_real_escape_string($mysqli, $tcols[$i]) . "`";
+
+			if($i != sizeof($tcols) - 1) $init_q .= ",";
+			else $init_q .= ") VALUES ";
+		}
+
+		for($i = 0; $i < sizeof($arr); $i++){
+			if(sizeof($arr[$i]) != sizeof($tcols))
+				return false;
+
+			$init_q .= '(';
+			for($j = 0; $j < sizeof($tcols); $j++) {
+				if(!isset($arr[$i][$tcols[$j]]) && $arr[$i][$tcols[$j]] != null)
+					return false;
+				else{
+					if(is_string($arr[$i][$tcols[$j]])){
+						$init_q .= '"'. mysqli_real_escape_string($mysqli, $arr[$i][$tcols[$j]]) . '"';
+					} else if($arr[$i][$tcols[$j]] === null) {
+						$init_q .= 'null';
+						
+					} else {
+						$init_q .= mysqli_real_escape_string($mysqli, $arr[$i][$tcols[$j]]);
+					}
+				}
+
+				if($j != sizeof($tcols) - 1)
+					$init_q .= ', ';
+				else
+					$init_q .= ")";
+
+			}
+
+			if($i != sizeof($arr) - 1)
+				$init_q .= ", ";
+		}
+
+		return $init_q;
+	}
+
 }
