@@ -66,7 +66,7 @@ if( $("#mapcontainer").length > 0 ) {
       success: function (readings) {
         readings.forEach(function(reading){
             data.push({
-                z: reading.rain,
+                z: reading.temperature,
                 lat: reading.latitude,
                 lon: reading.longitude,
                 observation_time: reading.observation_time,
@@ -78,11 +78,13 @@ if( $("#mapcontainer").length > 0 ) {
                 solar_radiation: reading.solar_radiation
             });
 
-            if(reading.rain > max) max = reading.rain;
-            if(reading.rain < min) min = reading.rain;
+            if(reading.temperature > max) max = reading.temperature;
+            if(reading.temperature < min) min = reading.temperature;
         }) 
+        console.log(min);
+        console.log(max);
         data.forEach(function(reading) {
-            reading.z = (reading.z - min) / ((max-min)*1.0);
+            reading.z = ((reading.z - min) / ((max-min)*1.0)+1); // +1 to ensure no zero denoms
             // console.log(reading.z);
         })
         highcharts = new Map(data, min, max);

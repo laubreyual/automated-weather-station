@@ -27,7 +27,7 @@ CREATE TABLE reading (
     wind_speed DECIMAL(12,5),
     wind_direction VARCHAR(60),
     solar_radiation INT(10),
-    rain DECIMAL(12,5)
+    rain DECIMAL(12,5),
     wind_degrees DECIMAL(12,5),
-    pressure DECIMAL(12,5),
+    pressure DECIMAL(12,5)
 );
