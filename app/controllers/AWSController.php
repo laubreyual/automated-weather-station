@@ -32,6 +32,25 @@ class AWSController extends Controller{
 
 	public function main(){
 
+		$awses = $this->db->exec('select * from aws');
+
+		if ($this->f3->exists('GET.id')) {
+			$aws_id = $this->f3->get('GET.id');
+		} else {
+			$aws_id = $awses[0]['aws_id'];
+		}
+
+		$am = new AWSMapper($this->db);
+		$am->load(['aws_id = ?', $aws_id]);
+
+		if ($am->dry()) {
+			die('Invalid id.');
+		} 
+
+		$this->f3->set('aws_id', $aws_id);
+		$this->f3->set('aws', $am->cast());
+		$this->f3->set('awses', $awses);
+
 		$this->render('main');
 
 	}
@@ -86,6 +105,8 @@ class AWSController extends Controller{
 				$last_update = '1990-01-01 00:00:00';
 			}
 
+			$existing = [];
+
 			$buffer = [];
 
 			echo "Reading $dir/$file\n";
@@ -106,6 +127,11 @@ class AWSController extends Controller{
 						if($values['observation_time'] < $last_update) {
 							echo "skipping\n";
 							continue;
+						} else if (in_array($values['observation_time'], $existing)) {
+							echo "existing\n";
+							continue;
+						} else {
+							$existing[] = $values['observation_time'];
 						}
 						
 						$values['aws_id'] = $aws['aws_id'];
@@ -118,8 +144,10 @@ class AWSController extends Controller{
 						$values['temperature'] = $json['temp_c']?: null;
 						$values['wind_speed'] = $json['wind_mph']?: null;
 						$values['wind_direction'] = $json['wind_dir']?: null;
+						$values['wind_degrees'] = (float) $json['wind_degrees']?: null;
 						$values['solar_radiation'] = $json['davis_current_observation']['solar_radiation']?: null;
 						$values['rain'] = $json['davis_current_observation']['rain_day_in']?: null;
+						$values['pressure'] = (float) $json['pressure_mb']?: null;
 
 						echo $date."\n";
 						$buffer[] = $values;
@@ -130,7 +158,7 @@ class AWSController extends Controller{
 
 					if (sizeof($buffer) >= 500) {
 
-						$cols = array('aws_id','observation_time','location','latitude','longitude','date_recorded','station_id','station_name','temperature','wind_speed','wind_direction','solar_radiation','rain');
+						$cols = array('aws_id','observation_time','location','latitude','longitude','date_recorded','station_id','station_name','temperature','wind_speed','wind_direction','wind_degrees','solar_radiation','rain','pressure');
 
 						$query = $this->createInsertQuery($buffer, 'reading', $cols);
 
@@ -149,8 +177,7 @@ class AWSController extends Controller{
 			} 
 
 			if (sizeof($buffer) > 0) {
-
-				$cols = array('aws_id','observation_time','location','latitude','longitude','date_recorded','station_id','station_name','temperature','wind_speed','wind_direction','solar_radiation','rain');
+				$cols = array('aws_id','observation_time','location','latitude','longitude','date_recorded','station_id','station_name','temperature','wind_speed','wind_direction','wind_degrees','solar_radiation','rain','pressure');
 
 				$query = $this->createInsertQuery($buffer, 'reading', $cols);
 
@@ -166,31 +193,52 @@ class AWSController extends Controller{
 
 	function generateXMLdata(){
 
+		$aws_id = $this->f3->get('PARAMS.id');
+
+		$limit = 30;
+
+
+		$readings = $this->db->exec('select * from reading where aws_id = :aws_id order by observation_time desc limit '.$limit, [
+			':aws_id'=>$aws_id,
+		]);
+		$readings = array_reverse($readings);
+
 		$symbols = file_get_contents('app/resources/weather-symbols.txt');
 		$symbols = explode("\n", $symbols);
 
 		$weatherdata = new SimpleXMLElement('<weatherdata/>');
 
 		$location = $weatherdata->addChild('location');
-		$location->addChild('name', 'LB');
-		$location->addChild('type', 'Town');
-		$location->addChild('country', 'Philippines');
+		$parts = preg_split('~,(?=[^,]*$)~', $readings[0]['location']);
+		$location->addChild('name', $parts[0]);
+		//$location->addChild('type', 'Town');
+		$location->addChild('country', $parts[1]);
 
 		$credit = $weatherdata->addChild('credit');
 		$link = $credit->addChild('link');
-		$link->addAttribute('text', 'Weather forecast from Yr, delivered by the Norwegian Meteorological Institute and the NRK" url="http://www.yr.no/place/United_Kingdom/England/London/');
+		$link->addAttribute('text', 'Weather data from api.weatherlink.com');
 		
 		$timezone = $location->addChild('timezone');
-		$timezone->addAttribute('id', 'Europe/London');
-		$timezone->addAttribute('utcoffsetMinutes', '60');
+		$timezone->addAttribute('id', 'Asia/Manila');
+		$timezone->addAttribute('utcoffsetMinutes', '480');
 
 		$forecast = $weatherdata->addChild('forecast');
 		$tabular = $forecast->addChild('tabular');
-		for ($i=0; $i<30; $i++) {
+
+		$lasttemp = 26;
+		$lastpress = 1013;
+
+		foreach ($readings as $i => $reading) {
 			$time = $tabular->addChild('time');
 
-			$time->addAttribute('from', date("Y-m-d\TH:i:s", strtotime("+".$i." hours")));
-			$time->addAttribute('to', date("Y-m-d\TH:i:s", strtotime("+".($i+1)." hours")));
+			$time->addAttribute('from', date("Y-m-d\TH:i:s", strtotime($reading['observation_time'])));
+
+			if ($i+1 == sizeof($readings)) {
+				$time->addAttribute('to', date("Y-m-d\TH:i:s", strtotime($reading['observation_time'])+3600));
+
+			} else {
+				$time->addAttribute('to', date("Y-m-d\TH:i:s", strtotime($readings[$i+1]['observation_time'])));
+			}
 
 			$x = rand(0,sizeof($symbols)-1);
 			$parts = explode(',', $symbols[$x]);
@@ -203,37 +251,34 @@ class AWSController extends Controller{
 			$symbol->addAttribute('numberEx', $x);
 			$symbol->addAttribute('name', $name);
 			$symbol->addAttribute('var', $var);
-
 			
 			$precipitation = $time->addChild('precipitation');
-			$precipitation->addAttribute('value', rand(0,3).'.'.rand(0,99));
+			$precipitation->addAttribute('value', $reading['rain']);
 
 			$windDirection = $time->addChild('windDirection');
-			$windDirection->addAttribute('deg', rand(0,360).'.'.rand(0,9));
+			$windDirection->addAttribute('deg', $reading['wind_degrees']); 
 			$windDirection->addAttribute('code', 'SSE');
-			$windDirection->addAttribute('name', 'South-southeast');
-
+			$windDirection->addAttribute('name', $reading['wind_direction']);
 			
 			$windSpeed = $time->addChild('windSpeed');
-			$windSpeed->addAttribute('mps', rand(0,10).'.'.rand(0,9));
+			$windSpeed->addAttribute('mps', $reading['wind_speed']);
 			$windSpeed->addAttribute('name', 'Gentle breeze');
-
 
 			$temperature = $time->addChild('temperature');
 			$temperature->addAttribute('unit', 'celsius');
-			$temperature->addAttribute('value', rand(12,35));
-
+			$temperature->addAttribute('value', $reading['temperature']?:$lasttemp);
+			$lasttemp = $reading['temperature']?:$lasttemp;
 
 			$pressure = $time->addChild('pressure');
 			$pressure->addAttribute('unit', 'hPa');
-			$pressure->addAttribute('value', rand(900,1200).'.'.rand(0,9));
+			$pressure->addAttribute('value', $reading['pressure']?:$lastpress);
+			$lastpress = $reading['pressure']?:$lastpress;
+
+
 
 		}
 
-
 		echo $weatherdata->asXML();
-
-		
 
 
 	}

@@ -1,4 +1,18 @@
 <div class="row">
+    <form id="aws-form" class="col-md-12">
+    	<select name="id" id="aws-select">
+    		<repeat group="{{@awses}}" value="{{@a}}">
+    			<check if="{{@aws.aws_id == @a.aws_id}}">
+    				<true>
+    					<option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+    				</true>
+    				<false>
+    					<option value="{{@a.aws_id}}">{{@a.name}}</option>
+    				</false>
+    			</check>
+    		</repeat>
+    	</select>
+    </form>
     <div class="col-md-12">
         <div id="meteogramcontainer" style="width: 100%; min-width: 380px; height: 310px; margin: 0 auto">
           <div style="margin-top: 100px; text-align: center" id="loading">
@@ -7,3 +21,14 @@
         </div>
     </div>
 </div>
+
+<script>
+
+	var AWS_ID = {{@aws_id}};
+	
+	$('#aws-select').change(function(){
+		$('#aws-form').submit();
+	});
+
+
+</script>
