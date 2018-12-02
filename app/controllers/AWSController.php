@@ -292,10 +292,10 @@ class AWSController extends Controller{
 		if ($this->f3->exists('SESSION.user')) {
 			$this->f3->reroute('/manageAWS');
 		} else {
-			$error = $this->f3->get('SESSION.error');
-			$this->f3->clear('SESSION.error');
+			$notice = $this->f3->get('SESSION.notice');
+			$this->f3->clear('SESSION.notice');
 
-			$this->f3->set('PAGE.error',$error);
+			$this->f3->set('PAGE.notice',$notice);
 			$this->render('login');
 		}
 	}
@@ -308,7 +308,7 @@ class AWSController extends Controller{
 		$um->load(array('username = :username AND password = :password', array(':username'=>$username,':password'=>$password)));
 
 		if($um->dry()){
-			$this->f3->set('SESSION.error', "Invalid username/password.");
+			$this->f3->set('SESSION.notice', "Invalid username/password.");
 			$this->f3->reroute('/login');
 		} else {
 			$temp = $um->cast();
@@ -340,6 +340,10 @@ class AWSController extends Controller{
 				);
 			}
 
+			$notice = $this->f3->get('SESSION.notice');
+			$this->f3->clear('SESSION.notice');
+
+			$this->f3->set('PAGE.notice',$notice);
 			$this->f3->set('aws', $aws);
 			$this->render('manageaws');
 		} else {
@@ -349,15 +353,35 @@ class AWSController extends Controller{
 
 	public function addNewAWS($f3){
 		if ($this->f3->exists('SESSION.user')) {
-			$am = new AWSMapper($this->db);
-			$am->name = $f3->get('POST.name');
-			$am->username = $f3->get('POST.username');
-			$am->password = $f3->get('POST.password');
-			$am->save();
+			
+			$user = $f3->get('POST.username');
+			$pass = $f3->get('POST.password');
 
+			$url = "https://api.weatherlink.com/v1/NoaaExt.json?user=$user&pass=$pass&apiToken=7835408D92DD4B0E883CEC9D89B09DB0";
+
+			$curl =  new Curl\Curl();
+			$curl->get($url);
+			if($curl->http_status_code == 200) {
+				$json = trim($curl->response);
+       			if (isJson($json)) {
+       				$am = new AWSMapper($this->db);
+					$am->name = $f3->get('POST.name');
+					$am->username = $f3->get('POST.username');
+					$am->password = $f3->get('POST.password');
+					$am->save();
+					$this->f3->set('SESSION.notice', "New AWS added.");
+       			} else {
+       				$this->f3->set('SESSION.notice', "Please provide a valid username and password.");
+       			}
+			} else {
+   				$this->f3->set('SESSION.notice', "Please provide a valid username and password.");
+   			}
 			$this->f3->reroute('/manageAWS');
+
 		} else {
+
 			$this->f3->reroute('/login');
+		
 		}
 	}
 
@@ -372,12 +396,21 @@ class AWSController extends Controller{
 			$username = trim($username);
 			$password = trim($password);
 
-			$this->db->exec('UPDATE aws SET name = :name, username = :username, password = :password where aws_id = :id', array(
-				':name'=>$name,
-				':username'=>$username,
-				':password'=>$password,
-				':id'=>$this->f3->get('POST.aws_id')
-			));
+			$url = "https://api.weatherlink.com/v1/NoaaExt.json?user=$username&pass=$password&apiToken=7835408D92DD4B0E883CEC9D89B09DB0";
+
+			$curl =  new Curl\Curl();
+			$curl->get($url);
+			if($curl->http_status_code == 200) {
+				$json = trim($curl->response);
+				if (isJson($json)) {
+	        		$this->db->exec('UPDATE aws SET name = :name, username = :username, password = :password where aws_id = :id', array(
+	        			':name'=>$name,
+	        			':username'=>$username,
+	        			':password'=>$password,
+	        			':id'=>$this->f3->get('POST.aws_id')
+	        		));
+	        	}
+			}
 			$this->f3->reroute('/manageAWS');
 		} else {
 			$this->f3->reroute('/login');
