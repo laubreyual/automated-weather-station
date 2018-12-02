@@ -23,16 +23,21 @@
 							<form action="{{ @BASE.'/addAWS' }}" method="post">
 							  <div class="form-group">
 							    <label for="name">Name</label>
-							    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+							    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
 							  </div>
 							  <div class="form-group">
 							    <label for="username">Username</label>
-							    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+							    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
 							  </div>
 							  <div class="form-group">
 							    <label for="password">Password</label>
-							    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+							    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
 							  </div>
+							  <check if="{{ @PAGE.notice }}">
+								  <div class="center text-center">
+								  	<pre>{{ @PAGE.notice }}</pre>
+								  </div>
+							  </check>
 							  <div class="text-center"><button type="submit" class="btn btn-success">Add New AWS  <i class="fas fa-plus"></i></button></div>
 							</form>
 						</div>

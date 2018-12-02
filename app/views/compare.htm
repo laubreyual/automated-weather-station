@@ -8,24 +8,36 @@
                   <h1 class="mdc-card__title mdc-card__title--large">AWS Stations</h1>
                 </section>
                 <section class="mdc-card__supporting-text">
-                  <div class="row">
+                  <form id="aws-form" class="row">
                     <div class="col-md-6">
-                      <select style="width:100%;" class="form-control" name="aws1">
-                        <option value="0" selected>AWS 1</option>
-                        <repeat group="{{ @aws }}" value="{{ @aws }}">
-                          <option value="{{ @aws.id }}">{{ @aws.name }}</option>
+                      <select style="width:100%;" class="form-control" id="aws-select" name="id">
+                        <repeat group="{{ @awses }}" value="{{ @a }}">
+                          <check if="{{@aws_id == @a.aws_id}}">
+                            <true>
+                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                            </true>
+                            <false>
+                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                            </false>
+                          </check>
                         </repeat>
                       </select>
                     </div>
                     <div class="col-md-6">
-                      <select style="width:100%;" class="form-control" name="aws2">
-                        <option value="0" selected>AWS 2</option>
-                        <repeat group="{{ @aws2 }}" value="{{ @aws2 }}">
-                          <option value="{{ @aws2.id }}">{{ @aws2.name }}</option>
+                      <select style="width:100%;" class="form-control" id="aws-select2" name="id2">
+                        <repeat group="{{ @awses }}" value="{{ @a }}">
+                          <check if="{{@aws_id2 == @a.aws_id}}">
+                            <true>
+                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                            </true>
+                            <false>
+                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                            </false>
+                          </check>
                         </repeat>
                       </select>
                     </div>
-                  </div>
+                  </form>
                 </section>
               </div>
             </div>
@@ -48,20 +60,20 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td class="text-left">AWS Station 1</td>
-                        <td class="text-center">1.59</td>
-                        <td class="text-center">6.0</td>
-                        <td class="text-center">3.4</td>
-                        <td class="text-center">7.5</td>
-                        <td class="text-center">8.5</td>
+                        <td class="text-left">{{ @awsname1 }}</td>
+                        <td class="text-center">{{ isset(@precipitation1) ? round(@precipitation1,2)." in/hr" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@radiation1) ? @radiation1 : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@windspeed1) ? round(@windspeed1,2)." mph" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@winddirection1) ? @winddirection1 : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@temperature1) ? round(@temperature1,2)." &#176c" : ("N/A") }}</td>
                       </tr>
                       <tr>
-                        <td class="text-left">AWS Station 2</td>
-                        <td class="text-center">1.59</td>
-                        <td class="text-center">6.0</td>
-                        <td class="text-center">3.4</td>
-                        <td class="text-center">7.5</td>
-                        <td class="text-center">8.5</td>
+                        <td class="text-left">{{ @awsname2 }}</td>
+                        <td class="text-center">{{ isset(@precipitation2) ? round(@precipitation2,2)." in/hr" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@radiation2) ? @radiation2 : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@windspeed2) ? round(@windspeed2,2)." mph" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@winddirection2) ? @winddirection2 : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@temperature2) ? round(@temperature2,2)." &#176c" : ("N/A") }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -90,3 +102,20 @@
 				</div>
       </main>
     </div>
+
+
+    <script>
+
+      var AWS_ID = {{@aws_id}};
+      var AWS_ID2 = {{@aws_id2}};
+
+      $('#aws-select').change(function(){
+        $('#aws-form').submit();
+      });
+
+      $('#aws-select2').change(function(){
+        $('#aws-form').submit();
+      });
+      
+
+    </script>

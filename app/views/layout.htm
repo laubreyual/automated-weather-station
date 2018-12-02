@@ -85,14 +85,6 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="sidebar-link" href="{{@BASE}}/manageAWS">
-                    <span class="icon-holder">
-                      <i class="c-purple-500 fas fa-lg fa-cogs"></i>
-                    </span>
-                    <span class="title">AWS Manager</span>
-                  </a>
-                </li>
-                <li class="nav-item">
                   <a class="sidebar-link" href="{{@BASE}}/compare">
                     <span class="icon-holder">
                       <i class="c-purple-500 fas fa-lg fa-bolt"></i>
@@ -100,6 +92,25 @@
                     <span class="title">Compare AWS</span>
                   </a>
                 </li>
+                <check if="{{ @SESSION.user }}">
+                  <li class="nav-item">
+                    <a class="sidebar-link" href="{{@BASE}}/manageAWS">
+                      <span class="icon-holder">
+                        <i class="c-purple-500 fas fa-lg fa-cogs"></i>
+                      </span>
+                      <span class="title">AWS Manager</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="sidebar-link" href="{{@BASE}}/logout">
+                      <span class="icon-holder">
+                        <i class="c-purple-500 fas fa-lg fa-sign-out-alt"></i>
+                      </span>
+                      <span class="title">Logout</span>
+                    </a>
+                  </li>
+                </check>
+
               </ul>
             </div>
           </div>

@@ -23,9 +23,11 @@ CREATE TABLE reading (
     date_recorded DATETIME NOT NULL,
     station_id VARCHAR(60),
     station_name VARCHAR(255),
-    temperature DECIMAL(5,5),
-    wind_speed DECIMAL(5,5),
+    temperature DECIMAL(12,5),
+    wind_speed DECIMAL(12,5),
     wind_direction VARCHAR(60),
     solar_radiation INT(10),
-    rain DECIMAL(5,5)
+    rain DECIMAL(12,5)
+    wind_degrees DECIMAL(12,5),
+    pressure DECIMAL(12,5),
 );
