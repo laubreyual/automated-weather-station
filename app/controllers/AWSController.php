@@ -228,8 +228,19 @@ class AWSController extends Controller{
 	}
 
 	public function manageAWS(){
-		$aws = $this->db->exec('SELECT * FROM aws'); 
+		$stations = $this->db->exec('SELECT * FROM aws'); 
 
+		$aws = [];
+		foreach ($stations as $station) {
+			$aws[] = array(
+				'id' => $station['aws_id'],
+				'name' => $station['name'],
+				'username' => $station['username'],
+				'password' => $station['password']
+			);
+		}
+
+		$this->f3->set('aws', $aws);
 		$this->render('manageaws');
 	}
 
@@ -244,7 +255,32 @@ class AWSController extends Controller{
 	}
 
 	public function editAWS($f3){
+		$name = $this->f3->get('POST.name');
+		$username = $this->f3->get('POST.username');
+		$password = $this->f3->get('POST.password');
+		$name = strtoupper($name);
+		$name = trim($name);
+		$username = strtoupper($username);
+		$username = trim($username);
+		$password = trim($password);
+
+		$this->db->exec('UPDATE aws SET name = :name, username = :username, password = :password where aws_id = :id', array(
+			':name'=>$name,
+			':username'=>$username,
+			':password'=>$password,
+			':id'=>$this->f3->get('POST.aws_id')
+		));
+		$this->f3->reroute('/manageAWS');
+	}
+
+	public function deleteAWS($f3){
+		$aws_id = $this->f3->get('PARAMS.id');
+
+		$this->db->exec('DELETE FROM aws WHERE aws_id = :id', array(
+			':id'=>$aws_id
+		));
 		
+		$this->f3->reroute('/manageAWS');
 	}
 
 	public function compare(){
