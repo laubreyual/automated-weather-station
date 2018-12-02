@@ -1,6 +1,4 @@
 tmp/
-app/data/
-app/data/*.txt
 app/server.ini
 vendor/
 **/.DS_Store
