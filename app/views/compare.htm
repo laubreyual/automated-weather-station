@@ -14,10 +14,10 @@
                         <repeat group="{{ @awses }}" value="{{ @a }}">
                           <check if="{{@aws_id == @a.aws_id}}">
                             <true>
-                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                              <option value="{{@a.aws_id}}" selected>{{@a.station_name}}</option>
                             </true>
                             <false>
-                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                              <option value="{{@a.aws_id}}">{{@a.station_name}}</option>
                             </false>
                           </check>
                         </repeat>
@@ -28,10 +28,10 @@
                         <repeat group="{{ @awses }}" value="{{ @a }}">
                           <check if="{{@aws_id2 == @a.aws_id}}">
                             <true>
-                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                              <option value="{{@a.aws_id}}" selected>{{@a.station_name}}</option>
                             </true>
                             <false>
-                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                              <option value="{{@a.aws_id}}">{{@a.station_name}}</option>
                             </false>
                           </check>
                         </repeat>

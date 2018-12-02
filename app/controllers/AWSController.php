@@ -440,12 +440,12 @@ class AWSController extends Controller{
 
 	public function compare(){
 
-		$results = $this->db->exec('SELECT * from aws;');
+		$results = $this->db->exec('SELECT DISTINCT(station_name), aws_id FROM reading;');
 		$aws = [];
 		foreach ($results as $result) {
 			$aws[] = array(
 				'id'=>$result['aws_id'],
-				'name'=>$result['name']
+				'name'=>$result['station_name']
 			);
 		}
 
