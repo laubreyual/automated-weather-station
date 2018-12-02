@@ -568,6 +568,16 @@
               url: BASE+'/xml/'+AWS_ID,
               success: function (xml) {
                   window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+              },
+              error: Meteogram.prototype.error
+          });
+        }
+
+        if($("#meteogramcontainer2").length > 0) {
+          $.ajax({
+              dataType: 'xml',
+              url: BASE+'/xml/'+AWS_ID2,
+              success: function (xml) {
                   window.meteogram = new Meteogram(xml, 'meteogramcontainer2');
               },
               error: Meteogram.prototype.error

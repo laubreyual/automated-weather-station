@@ -400,7 +400,7 @@ class AWSController extends Controller{
 
 	public function compare(){
 
-		$results = $this->db->exec('SELECT aws_id, name from aws;');
+		$results = $this->db->exec('SELECT * from aws;');
 		$aws = [];
 		foreach ($results as $result) {
 			$aws[] = array(
@@ -409,6 +409,23 @@ class AWSController extends Controller{
 			);
 		}
 
+
+		if ($this->f3->exists('GET.id')) {
+			$aws_id = $this->f3->get('GET.id');
+		} else {
+			$aws_id = $results[0]['aws_id'];
+		}
+		$this->f3->set('aws_id', $aws_id);
+
+		if ($this->f3->exists('GET.id2')) {
+			$aws_id2 = $this->f3->get('GET.id2');
+		} else {
+			$aws_id2 = $results[0]['aws_id'];
+		}
+		$this->f3->set('aws_id2', $aws_id2);
+		
+
+		$this->f3->set('awses', $results);
 		$this->f3->set('aws', $aws);
 		$this->f3->set('aws2', $aws);
 		$this->render('compare');

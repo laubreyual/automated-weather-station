@@ -8,24 +8,36 @@
                   <h1 class="mdc-card__title mdc-card__title--large">AWS Stations</h1>
                 </section>
                 <section class="mdc-card__supporting-text">
-                  <div class="row">
+                  <form id="aws-form" class="row">
                     <div class="col-md-6">
-                      <select style="width:100%;" class="form-control" name="aws1">
-                        <option value="0" selected>AWS 1</option>
-                        <repeat group="{{ @aws }}" value="{{ @aws }}">
-                          <option value="{{ @aws.id }}">{{ @aws.name }}</option>
+                      <select style="width:100%;" class="form-control" id="aws-select" name="id">
+                        <repeat group="{{ @awses }}" value="{{ @a }}">
+                          <check if="{{@aws_id == @a.aws_id}}">
+                            <true>
+                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                            </true>
+                            <false>
+                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                            </false>
+                          </check>
                         </repeat>
                       </select>
                     </div>
                     <div class="col-md-6">
-                      <select style="width:100%;" class="form-control" name="aws2">
-                        <option value="0" selected>AWS 2</option>
-                        <repeat group="{{ @aws2 }}" value="{{ @aws2 }}">
-                          <option value="{{ @aws2.id }}">{{ @aws2.name }}</option>
+                      <select style="width:100%;" class="form-control" id="aws-select2" name="id2">
+                        <repeat group="{{ @awses }}" value="{{ @a }}">
+                          <check if="{{@aws_id2 == @a.aws_id}}">
+                            <true>
+                              <option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+                            </true>
+                            <false>
+                              <option value="{{@a.aws_id}}">{{@a.name}}</option>
+                            </false>
+                          </check>
                         </repeat>
                       </select>
                     </div>
-                  </div>
+                  </form>
                 </section>
               </div>
             </div>
@@ -90,3 +102,20 @@
 				</div>
       </main>
     </div>
+
+
+    <script>
+
+      var AWS_ID = {{@aws_id}};
+      var AWS_ID2 = {{@aws_id2}};
+
+      $('#aws-select').change(function(){
+        $('#aws-form').submit();
+      });
+
+      $('#aws-select2').change(function(){
+        $('#aws-form').submit();
+      });
+      
+
+    </script>
