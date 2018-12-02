@@ -43,6 +43,13 @@ class AWSController extends Controller{
 
 	}
 
+	public function mapInitData() {
+		$data = $this->db->exec('SELECT * FROM `reading` WHERE observation_time = ( SELECT max(observation_time) from `reading`)');
+
+		// echo $data;
+		echo json_encode($data);
+	}
+
 	public function map(){
 		$this->render('awsmap');
 	}
