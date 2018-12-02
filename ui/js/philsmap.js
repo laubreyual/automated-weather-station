@@ -2,10 +2,26 @@
 // Data is joined to map using value of 'hc-key' property by default.
 // See API docs for 'joinBy' for more info on linking data and map.
 
-function Map(data) {
+// Highcharts.getOptions().colors
+// 0: "#7cb5ec" - blue
+// 1: "#434348" - black
+// 2: "#90ed7d" - green
+// 3: "#f7a35c" - orange
+// 4: "#8085e9" - violet
+// 5: "#f15c80" - pink
+// 6: "#e4d354" - yellow
+// 7: "#2b908f" - dark green
+// 8: "#f45b5b" - red
+// 9: "#91e8e1" - blue green
+
+function Map(data, zmetric) {
     // Create the chart
+    var titleText;
     var mapData = Highcharts.maps['countries/ph/ph-all'];
-    console.log(data);  
+    if(zmetric == "temp" || zmetric == null) titleText = "Temperature readings of weather stations in the Philippines";
+    else if(zmetric == "rain") titleText = "Precipitation readings of weather stations in the Philippines";
+    else if(zmetric == "speed") titleText = "Wind speed readings of weather stations in the Philippines";
+    else if(zmetric == "rad") titleText = "Solar radiation readings of weather stations in the Philippines";
 
     Highcharts.mapChart('mapcontainer', {
         chart: {
@@ -13,7 +29,7 @@ function Map(data) {
         },
 
         title: {
-            text: 'Weather Stations in the Philippines'
+            text: titleText
         },
 
         subtitle: {
@@ -29,6 +45,7 @@ function Map(data) {
         tooltip: {
             headerFormat: '',
             pointFormat: '<b>{point.station_name}</b><br> \
+                            <b>z</b>: {point.z} <br> \
                             <b>Temperature</b>: {point.temperature} <br> \
                             <b>Precipitation</b>: {point.precipitation} <br> \
                             <b>Wind Speed</b>: {point.wind_speed} <br> \
@@ -54,8 +71,9 @@ function Map(data) {
     });
 }
 
-if( $("#mapcontainer").length > 0 ) {
-    // get data
+
+
+function initMap(zmetric = null) {
     var data = []; 
     var markerData = []; 
     var min = 999, max = 0;
@@ -63,10 +81,10 @@ if( $("#mapcontainer").length > 0 ) {
     $.ajax({
       dataType: 'json',
       url: BASE+'/mapJSON',
-      success: function (readings) {
+      success: function (readings) { 
         readings.forEach(function(reading){
-            data.push({
-                z: reading.temperature,
+            var input = {
+                
                 lat: reading.latitude,
                 lon: reading.longitude,
                 observation_time: reading.observation_time,
@@ -76,31 +94,35 @@ if( $("#mapcontainer").length > 0 ) {
                 wind_direction: reading.wind_direction,
                 wind_speed: reading.wind_speed,
                 solar_radiation: reading.solar_radiation
-            });
+            }
 
-            if(reading.temperature > max) max = reading.temperature;
-            if(reading.temperature < min) min = reading.temperature;
+            if(zmetric == "temp" || zmetric == null) input.z = reading.temperature;
+            else if(zmetric == "rain") input.z = reading.rain;
+            else if(zmetric == "speed") input.z = reading.wind_speed;
+            else if(zmetric == "rad") input.z = reading.solar_radiation;
+
+            data.push(input);
+
+            if(input.z > max) max = input.z;
+            if(input.z < min) min = input.z;
         }) 
-        console.log(min);
-        console.log(max);
+        // console.log(max);
+        // console.log(min);
         data.forEach(function(reading) {
-            reading.z = ((reading.z - min) / ((max-min)*1.0)+1); // +1 to ensure no zero denoms
+            if(reading.z == null) reading.z = 0;
+            if(max != min) reading.z = ((reading.z - min) / (max-min)*1.0); 
             // console.log(reading.z);
         })
-        highcharts = new Map(data, min, max);
+        highcharts = new Map(data, zmetric);
       }
     });
+}
 
-
-    // Highcharts.getOptions().colors
-    // 0: "#7cb5ec" - blue
-    // 1: "#434348" - black
-    // 2: "#90ed7d" - green
-    // 3: "#f7a35c" - orange
-    // 4: "#8085e9" - violet
-    // 5: "#f15c80" - pink
-    // 6: "#e4d354" - yellow
-    // 7: "#2b908f" - dark green
-    // 8: "#f45b5b" - red
-    // 9: "#91e8e1" - blue green
+if( $("#mapcontainer").length > 0 ) {
+    // get data
+    initMap();
+    metric.onchange = function(){
+        zmetric = metric.value;
+        initMap(zmetric);
+    }
 }
