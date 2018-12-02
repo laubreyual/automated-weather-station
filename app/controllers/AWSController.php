@@ -243,60 +243,114 @@ class AWSController extends Controller{
 		$this->render('addaws');
 	}
 
-	public function manageAWS(){
-		$stations = $this->db->exec('SELECT * FROM aws'); 
+	public function loginPage() {
+		if ($this->f3->exists('SESSION.user')) {
+			$this->f3->reroute('/manageAWS');
+		} else {
+			$error = $this->f3->get('SESSION.error');
+			$this->f3->clear('SESSION.error');
 
-		$aws = [];
-		foreach ($stations as $station) {
-			$aws[] = array(
-				'id' => $station['aws_id'],
-				'name' => $station['name'],
-				'username' => $station['username'],
-				'password' => $station['password']
-			);
+			$this->f3->set('PAGE.error',$error);
+			$this->render('login');
 		}
+	}
 
-		$this->f3->set('aws', $aws);
-		$this->render('manageaws');
+	public function login() {
+		$username = $this->f3->get('POST.username');
+		$password = $this->f3->get('POST.password');
+
+		$um = new UserMapper($this->db);
+		$um->load(array('username = :username AND password = :password', array(':username'=>$username,':password'=>$password)));
+
+		if($um->dry()){
+			$this->f3->set('SESSION.error', "Invalid username/password.");
+			$this->f3->reroute('/login');
+		} else {
+			$temp = $um->cast();
+
+			$user = array('user_id'=>$um->user_id,'first_name'=>$um->first_name,'last_name'=>$um->last_name,'username'=>$um->username);
+
+			$user = array_merge($temp,$user);
+			$this->f3->set('SESSION.user',$user);
+			$this->f3->reroute('/manageAWS');
+		}
+	}
+
+	public function logout() {
+		$this->f3->clear('SESSION.user');
+		$this->f3->reroute('/login');
+	}
+
+	public function manageAWS(){
+		if ($this->f3->exists('SESSION.user')) {
+			$stations = $this->db->exec('SELECT * FROM aws'); 
+
+			$aws = [];
+			foreach ($stations as $station) {
+				$aws[] = array(
+					'id' => $station['aws_id'],
+					'name' => $station['name'],
+					'username' => $station['username'],
+					'password' => $station['password']
+				);
+			}
+
+			$this->f3->set('aws', $aws);
+			$this->render('manageaws');
+		} else {
+			$this->f3->reroute('/login');
+		}
 	}
 
 	public function addNewAWS($f3){
-		$am = new AWSMapper($this->db);
-		$am->name = $f3->get('POST.name');
-		$am->username = $f3->get('POST.username');
-		$am->password = $f3->get('POST.password');
-		$am->save();
+		if ($this->f3->exists('SESSION.user')) {
+			$am = new AWSMapper($this->db);
+			$am->name = $f3->get('POST.name');
+			$am->username = $f3->get('POST.username');
+			$am->password = $f3->get('POST.password');
+			$am->save();
 
-		$this->f3->reroute('/manageAWS');
+			$this->f3->reroute('/manageAWS');
+		} else {
+			$this->f3->reroute('/login');
+		}
 	}
 
 	public function editAWS($f3){
-		$name = $this->f3->get('POST.name');
-		$username = $this->f3->get('POST.username');
-		$password = $this->f3->get('POST.password');
-		$name = strtoupper($name);
-		$name = trim($name);
-		$username = strtoupper($username);
-		$username = trim($username);
-		$password = trim($password);
+		if ($this->f3->exists('SESSION.user')) {
+			$name = $this->f3->get('POST.name');
+			$username = $this->f3->get('POST.username');
+			$password = $this->f3->get('POST.password');
+			$name = strtoupper($name);
+			$name = trim($name);
+			$username = strtoupper($username);
+			$username = trim($username);
+			$password = trim($password);
 
-		$this->db->exec('UPDATE aws SET name = :name, username = :username, password = :password where aws_id = :id', array(
-			':name'=>$name,
-			':username'=>$username,
-			':password'=>$password,
-			':id'=>$this->f3->get('POST.aws_id')
-		));
-		$this->f3->reroute('/manageAWS');
+			$this->db->exec('UPDATE aws SET name = :name, username = :username, password = :password where aws_id = :id', array(
+				':name'=>$name,
+				':username'=>$username,
+				':password'=>$password,
+				':id'=>$this->f3->get('POST.aws_id')
+			));
+			$this->f3->reroute('/manageAWS');
+		} else {
+			$this->f3->reroute('/login');
+		}
 	}
 
 	public function deleteAWS($f3){
-		$aws_id = $this->f3->get('PARAMS.id');
+		if ($this->f3->exists('SESSION.user')) {
+			$aws_id = $this->f3->get('PARAMS.id');
 
-		$this->db->exec('DELETE FROM aws WHERE aws_id = :id', array(
-			':id'=>$aws_id
-		));
-		
-		$this->f3->reroute('/manageAWS');
+			$this->db->exec('DELETE FROM aws WHERE aws_id = :id', array(
+				':id'=>$aws_id
+			));
+
+			$this->f3->reroute('/manageAWS');
+		} else {
+			$this->f3->reroute('/login');
+		}
 	}
 
 	public function compare(){
