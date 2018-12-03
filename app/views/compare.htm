@@ -51,29 +51,29 @@
                     <thead>
                       <tr>
                         <th class="text-left">AWS Station</th>
-                        <th class="text-center">Precipitation</th>
-                        <th class="text-center">Radiation</th>
-                        <th class="text-center">Wind Speed </th>
+                        <th class="text-center">Precipitation (in/hr)</th>
+                        <th class="text-center">Radiation (w/m&sup2;)</th>
+                        <th class="text-center">Wind Speed (mph)</th>
                         <th class="text-center">Wind Direction</th>
-                        <th class="text-center">Temperature</th>
+                        <th class="text-center">Temperature (&#176c)</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td class="text-left">{{ @awsname1 }}</td>
-                        <td class="text-center">{{ isset(@precipitation1) ? round(@precipitation1,2)." in/hr" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@precipitation1) ? round(@precipitation1,2) : ("N/A") }}</td>
                         <td class="text-center">{{ isset(@radiation1) ? @radiation1 : ("N/A") }}</td>
-                        <td class="text-center">{{ isset(@windspeed1) ? round(@windspeed1,2)." mph" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@windspeed1) ? round(@windspeed1,2) : ("N/A") }}</td>
                         <td class="text-center">{{ isset(@winddirection1) ? @winddirection1 : ("N/A") }}</td>
-                        <td class="text-center">{{ isset(@temperature1) ? round(@temperature1,2)." &#176c" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@temperature1) ? round(@temperature1,2) : ("N/A") }}</td>
                       </tr>
                       <tr>
                         <td class="text-left">{{ @awsname2 }}</td>
-                        <td class="text-center">{{ isset(@precipitation2) ? round(@precipitation2,2)." in/hr" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@precipitation2) ? round(@precipitation2,2) : ("N/A") }}</td>
                         <td class="text-center">{{ isset(@radiation2) ? @radiation2 : ("N/A") }}</td>
-                        <td class="text-center">{{ isset(@windspeed2) ? round(@windspeed2,2)." mph" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@windspeed2) ? round(@windspeed2,2) : ("N/A") }}</td>
                         <td class="text-center">{{ isset(@winddirection2) ? @winddirection2 : ("N/A") }}</td>
-                        <td class="text-center">{{ isset(@temperature2) ? round(@temperature2,2)." &#176c" : ("N/A") }}</td>
+                        <td class="text-center">{{ isset(@temperature2) ? round(@temperature2,2) : ("N/A") }}</td>
                       </tr>
                     </tbody>
                   </table>
