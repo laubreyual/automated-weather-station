@@ -42,14 +42,15 @@ function Map(data, zmetric) {
                 verticalAlign: 'bottom'
             }
         },
+
         tooltip: {
             headerFormat: '',
             pointFormat: '<b>{point.station_name}</b><br> \
-                            <b>Temperature</b>: {point.temperature} <br> \
-                            <b>Precipitation</b>: {point.precipitation} <br> \
-                            <b>Wind Speed</b>: {point.wind_speed} <br> \
+                            <b>Temperature</b>: {point.temperature} C<br> \
+                            <b>Precipitation</b>: {point.precipitation} in<br> \
+                            <b>Wind Speed</b>: {point.wind_speed} W/(m*m)<br> \
                             <b>Wind Direction</b>: {point.wind_direction} <br> \
-                            <b>Solar Radiation</b>: {point.solar_radiation} <br>'
+                            <b>Solar Radiation</b>: {point.solar_radiation} mph<br>'
         },
 
         series: [
