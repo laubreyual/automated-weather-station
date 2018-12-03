@@ -49,6 +49,11 @@ class AWSController extends Controller{
 
 		$this->f3->set('aws_id', $aws_id);
 		$this->f3->set('aws', $am->cast());
+
+
+		$awses = $this->db->exec('SELECT DISTINCT(station_name) name, aws_id FROM reading;');
+
+
 		$this->f3->set('awses', $awses);
 
 		$this->render('main');
