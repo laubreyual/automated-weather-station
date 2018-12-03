@@ -1,6 +1,7 @@
 <div class="row">
     <form id="aws-form" class="col-md-12 row">
         <div class="col-md-4">
+            <label for="start">Weather Station</label>
         	<select name="id" style="width:100%;" class="form-control" id="aws-select">
         		<repeat group="{{@awses}}" value="{{@a}}">
         			<check if="{{@aws.aws_id == @a.aws_id}}">
@@ -16,11 +17,11 @@
         </div>
         <div class="col-md-4">
             <label for="start">Start</label>
-            <input name="start" id="start" value="{{ @GET.start }}" type="datetime-local">
+            <input  class="form-control" name="start" id="start" value="{{ @GET.start }}" type="datetime-local">
         </div>
         <div class="col-md-4">
             <label for="end">End</label>
-            <input name="end" id="end" value="{{ @GET.end }}" type="datetime-local">
+            <input class="form-control" name="end" id="end" value="{{ @GET.end }}" type="datetime-local">
         </div>
     </form>
     <div class="col-md-12">
