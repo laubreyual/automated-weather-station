@@ -40,6 +40,19 @@ class AWSController extends Controller{
 			$aws_id = $awses[0]['aws_id'];
 		}
 
+		if ($this->f3->exists('GET.start') && $this->f3->get('GET.start')!='') {
+			$this->f3->set('start', $this->f3->get('GET.start'));
+		} else {
+			$this->f3->set('start', '');
+		}
+
+		if ($this->f3->exists('GET.end') && $this->f3->get('GET.end')!='') {
+			$this->f3->set('end', $this->f3->get('GET.end'));
+		} else {
+			$this->f3->set('end', '');
+		}
+
+
 		$am = new AWSMapper($this->db);
 		$am->load(['aws_id = ?', $aws_id]);
 
@@ -209,11 +222,34 @@ class AWSController extends Controller{
 
 		$limit = 30;
 
+		//echo $this->f3->get('GET.start').'<br>';
+		//echo $this->f3->get('GET.end').'<br>';
 
-		$readings = $this->db->exec('select * from reading where aws_id = :aws_id order by observation_time desc limit '.$limit, [
-			':aws_id'=>$aws_id,
-		]);
-		$readings = array_reverse($readings);
+		if ($this->f3->exists('GET.start') && $this->f3->get('GET.start')!='' && (!$this->f3->exists('GET.end') || $this->f3->get('GET.end')=='')) {
+			//die('here');
+			$readings = $this->db->exec('select * from reading where aws_id = :aws_id and observation_time >= :start order by observation_time limit '.$limit, [
+				':aws_id'=>$aws_id,
+				':start'=>date('Y-m-d H:i:s', strtotime($this->f3->get('GET.start')))
+			]);
+		} else if ($this->f3->exists('GET.start') && $this->f3->get('GET.start')!='' && $this->f3->exists('GET.end') && $this->f3->get('GET.end')!='') {
+			//die('here2');
+			$readings = $this->db->exec('select * from reading where aws_id = :aws_id and observation_time >= :start and observation_time <= :end order by observation_time', [
+				':aws_id'=>$aws_id,
+				':start'=>date('Y-m-d H:i:s', strtotime($this->f3->get('GET.start'))),
+				':end'=>date('Y-m-d H:i:s', strtotime($this->f3->get('GET.end')))
+			]);
+
+		} else {
+			//die('here3'); 
+			$readings = $this->db->exec('select * from reading where aws_id = :aws_id order by observation_time desc limit '.$limit, [
+				':aws_id'=>$aws_id,
+			]);
+			$readings = array_reverse($readings);
+		}
+
+		//var_dump($readings);
+
+
 
 		$symbols = file_get_contents('app/resources/weather-symbols.txt');
 		$symbols = explode("\n", $symbols);

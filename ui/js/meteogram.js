@@ -563,14 +563,31 @@
         //url = location.hash.substr(1);
         url = srcfile;
         if($("#meteogramcontainer").length > 0) {
-          $.ajax({
-              dataType: 'xml',
-              url: BASE+'/xml/'+AWS_ID,
-              success: function (xml) {
-                  window.meteogram = new Meteogram(xml, 'meteogramcontainer');
-              },
-              error: Meteogram.prototype.error
-          });
+
+          if (START) {
+              $.ajax({
+                  dataType: 'xml',
+                  url: BASE+'/xml/'+AWS_ID,
+                  data: {
+                    start:START,
+                    end:END
+                  },
+                  success: function (xml) {
+                      window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+                  },
+                  error: Meteogram.prototype.error
+              });
+          } else {
+            $.ajax({
+                dataType: 'xml',
+                url: BASE+'/xml/'+AWS_ID,
+                success: function (xml) {
+                    window.meteogram = new Meteogram(xml, 'meteogramcontainer');
+                },
+                error: Meteogram.prototype.error
+            });
+          }
+
         }
 
         if($("#meteogramcontainer2").length > 0) {

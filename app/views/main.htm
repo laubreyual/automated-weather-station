@@ -1,17 +1,27 @@
 <div class="row">
-    <form id="aws-form" class="col-md-6">
-    	<select name="id" style="width:100%;" class="form-control" id="aws-select">
-    		<repeat group="{{@awses}}" value="{{@a}}">
-    			<check if="{{@aws.aws_id == @a.aws_id}}">
-    				<true>
-    					<option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
-    				</true>
-    				<false>
-    					<option value="{{@a.aws_id}}">{{@a.name}}</option>
-    				</false>
-    			</check>
-    		</repeat>
-    	</select>
+    <form id="aws-form" class="col-md-12 row">
+        <div class="col-md-4">
+        	<select name="id" style="width:100%;" class="form-control" id="aws-select">
+        		<repeat group="{{@awses}}" value="{{@a}}">
+        			<check if="{{@aws.aws_id == @a.aws_id}}">
+        				<true>
+        					<option value="{{@a.aws_id}}" selected>{{@a.name}}</option>
+        				</true>
+        				<false>
+        					<option value="{{@a.aws_id}}">{{@a.name}}</option>
+        				</false>
+        			</check>
+        		</repeat>
+        	</select>
+        </div>
+        <div class="col-md-4">
+            <label for="start">Start</label>
+            <input name="start" id="start" value="{{ @GET.start }}" type="datetime-local">
+        </div>
+        <div class="col-md-4">
+            <label for="end">End</label>
+            <input name="end" id="end" value="{{ @GET.end }}" type="datetime-local">
+        </div>
     </form>
     <div class="col-md-12">
         <div id="meteogramcontainer" style="width: 100%; min-width: 380px; height: 310px; margin: 0 auto">
@@ -24,11 +34,21 @@
 
 <script>
 
-	var AWS_ID = {{@aws_id}};
+    var AWS_ID = {{@aws_id}};
+    var START = '{{@start}}';
+	var END = '{{@end}}';
 	
 	$('#aws-select').change(function(){
 		$('#aws-form').submit();
 	});
+
+    $('#start').change(function(){
+        $('#aws-form').submit();
+    });
+
+    $('#end').change(function(){
+        $('#aws-form').submit();
+    });
 
 
 </script>
