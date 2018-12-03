@@ -48,20 +48,20 @@
             <div class="sidebar-inner">
               <!-- ### $Sidebar Header ### -->
               <div class="sidebar-logo">
-                <div class="peers ai-c fxw-nw">
-                  <div class="peer peer-greed">
-                    <a class="sidebar-link td-n pX-45 pY-30" href="{{ @BASE }}">
-                      <div class="logo" style="width: 100%; height: auto;">
-                        <img src="{{ @UI. '/assets/static/images/logo.png'}}" alt="AWS">
-                      </div>
-                    </a>
-                  </div>
-                  <div class="peer">
+                <div class="layers w-100 d-f fxd-c">
+                  <div class="layer w-100">
                     <div class="mobile-toggle sidebar-toggle">
                       <a href="" class="td-n">
                         <i class="ti-arrow-circle-left"></i>
                       </a>
                     </div>
+                  </div>
+                  <div class="layer w-100 ai-c">
+                    <a class="sidebar-link td-n pX-45 pY-30" href="{{ @BASE }}">
+                      <div class="logo" style="width: 100%; height: auto;">
+                        <img src="{{ @UI. '/assets/static/images/logo.png'}}" alt="AWS">
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -117,7 +117,17 @@
 
           <!-- #Main ============================ -->
           <div class="page-container">
-
+            <div class="header navbar">
+              <div class="header-container">
+                <ul class="nav-left">
+                  <li class="sidebar-toggle-wrapper">
+                    <a id="sidebar-toggle" class="sidebar-toggle">
+                      <i class="ti-menu cur-p"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <!-- ### $App Screen Content ### -->
             <main class="main-content bgc-grey-100" id="dashboard-content">
                 <F3:include href="{{ @template }}"/>

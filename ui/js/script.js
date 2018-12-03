@@ -7,4 +7,8 @@ $(document).ready(function(){
 		$('#editpassword').val($(this).data('password'));
 	});
 	
+	$(".sidebar-toggle").click(function(){
+		$("#app-content").toggleClass("is-collapsed");
+	});
+
 });

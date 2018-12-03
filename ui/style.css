@@ -13,3 +13,22 @@
 a.manager {
 	color: black;
 }
+
+.mobile-toggle.sidebar-toggle {
+	line-height: 0;
+	padding: 10px;
+}
+
+#app-content .mobile-toggle.sidebar-toggle a {
+	padding: 0;
+}
+
+.header.navbar {
+	display: block;
+}
+
+@media screen and (min-width: 990px) {
+	.header.navbar {
+		display: none;
+	}
+}
