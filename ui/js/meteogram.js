@@ -564,7 +564,7 @@
         url = srcfile;
         if($("#meteogramcontainer").length > 0) {
 
-          if (START) {
+          if (typeof START !== 'undefined') {
               $.ajax({
                   dataType: 'xml',
                   url: BASE+'/xml/'+AWS_ID,
